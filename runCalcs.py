@@ -2,9 +2,9 @@
 
 import sys
 
-def runCalcs(dopeElem, storageDir, uCorr, pseudo):
-    dopant = dopeCalc(dopeElem, storageDir, uCorr, pseudo)
-    dopeCalc.calculate()
+def runCalcs(dopantName, storageDir, uCorr, pseudo):
+    dopant = dope(dopantName, storageDir, uCorr, pseudo)
+    dopant.calculate()
 
 
 if __name__ == "__main__":
