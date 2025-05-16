@@ -1,27 +1,35 @@
 import os
 import shutil
 
-def cpFile(filename, dest_path):
+def cpFile(filenames, dest_path):
     """
     Purpose:
-        Copy a file from the Automated-Vacancy-Formation-Energy-Calculator directory
-        (the directory where this script resides) to a specified destination path.
+        Copy one or more files from the 'vaspFiles' directory inside the Automated-Vacancy-Formation-Energy-Calculator
+        to a specified destination path.
 
     Inputs:
-        filename (str): Name of the file inside the AVFEC directory to copy.
-        dest_path (str): Full destination path (including filename) where the file will be copied.
+        filenames (str or list of str): Name(s) of the file(s) inside the 'vaspFiles' directory to copy.
+        dest_path (str): Destination directory (not full file paths). All files will be copied into this folder.
 
     Outputs:
-        None. Copies the file to the destination. Raises exceptions if errors occur.
+        None. Copies the file(s) to the destination. Raises exceptions if errors occur.
     """
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    src_path = os.path.join(script_dir, filename)
-    
-    if not os.path.isfile(src_path):
-        raise FileNotFoundError(f"Source file not found: {src_path}")
-    
-    try:
-        shutil.copy2(src_path, dest_path)
-        print(f"Copied '{src_path}' to '{dest_path}'")
-    except Exception as e:
-        raise Exception(f"Error copying file: {e}")
+    vasp_dir = os.path.join(script_dir, 'vaspFiles')
+
+    if isinstance(filenames, str):
+        filenames = [filenames]
+
+    for filename in filenames:
+        src_path = os.path.join(vasp_dir, filename)
+        dst_path = os.path.join(dest_path, filename)
+
+        if not os.path.isfile(src_path):
+            raise FileNotFoundError(f"Source file not found: {src_path}")
+        
+        try:
+            shutil.copy2(src_path, dst_path)
+            print(f"Copied '{src_path}' to '{dst_path}'")
+        except Exception as e:
+            raise Exception(f"Error copying {filename}: {e}")
+

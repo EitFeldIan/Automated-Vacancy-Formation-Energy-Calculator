@@ -1,5 +1,8 @@
 import os
 import shutil
+import sys
+sys.path.append('/home/ef35/Automated-Vacancy-Formation-Energy-Calculator')
+from cpFile import cpFile
 
 class dope:
     def __init__(self, dopantName, objectDir, uCorr, pseudo):
@@ -11,10 +14,13 @@ class dope:
         self.topODir = None
         self.vacanciesDir = None
         self.jobs = None
-        self.vaspPath = None
+        self.functionPath = "/home/ef35/Automated-Vacancy-Formation-Energy-Calculator"
+        self.isContinuous = False
+
 
     # Functions
     def runAll(self):
+        self.isContinuous = True
         pass
 
 
@@ -48,14 +54,49 @@ class dope:
         else:
             os.makedirs(self.objectDir)
 
-        #TODO This needs to deal with modifying vasp.slurm when necessary
+        os.chdir(self.objectDir)
+        #TODO: I need different version of vasp.slurm
         
 
     def pristine(self):
         self.setup()
+
+        os.makedirs("pristine")
+        os.chdir("pristine")
+        self.pristineDir = os.path.join(self.objectDir, "pristine")
+
+
         self.jobs["pristine"] = {"1CUSO": "Not submitted", "2CUSnoO": "Not submitted", "3subCUS": "Not submitted", "4Bridge": "Not submitted", "5subBridge": "Not submitted"}
+        dopeAtom = {"1CUSO": 196, "2CUSnoO": 196, "3subCUS": 173, "4Bridge": 189, "5subBridge": 180}
+        removeAtoms = {"1CUSO": None, "2CUSnoO": 132, "3subCUS": None, "4Bridge": None, "5subBridge": None}
+
         for job in self.jobs["pristine"]:
+            os.makedirs(job)
+            jobPath = os.path.join(self.pristineDir, job)
+
+            cpFile(["INCAR", "RuPOSCAR", "KPOINTS"], jobPath)
+
+            #TODO: Have different vasp.slurm behavior depending on isContinuous
+
+            if not self.isContinuous:
+                cpFile(["vasp.slurm"], jobPath)
+
+            #TODO: figure out POTCAR
+
+            #TODO: modify POSCAR
+
+
+
             
+    def modifyPOSCAR(POSCARpath, dopeAtom, removeAtoms):
+        if dopeAtom !=None:
+            pass
+        
+        if removeAtoms !=None:
+            pass
+            
+    
+
 
     def topO(self):
         pass
