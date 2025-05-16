@@ -4,7 +4,7 @@ import sys
 
 def runCalcs(dopantName, storageDir, uCorr, pseudo):
     dopant = dope(dopantName, storageDir, uCorr, pseudo)
-    dopant.calculate()
+    dopant.runAll()
 
 
 if __name__ == "__main__":
