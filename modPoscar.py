@@ -5,7 +5,7 @@ import sys
 import argparse
 
 
-def modifyPOSCAR(POSCARpath, elemName, replaceAtomInd, removeAtomsInd):
+def modPOSCAR(POSCARpath, elemName, replaceAtomInd, removeAtomsInd):
     if replaceAtomInd !=None:
         replaceAtom(POSCARpath, replaceAtomInd, elemName)
         

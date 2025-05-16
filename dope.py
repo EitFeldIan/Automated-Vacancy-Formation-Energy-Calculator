@@ -3,10 +3,11 @@ import shutil
 import sys
 sys.path.append('/home/ef35/Automated-Vacancy-Formation-Energy-Calculator')
 from cpFile import cpFile
+from modAtom import modifyPoscar
 
 class dope:
-    def __init__(self, dopantName, objectDir, uCorr, pseudo):
-        self.dopantName = dopantName
+    def __init__(self, dopeName, objectDir, uCorr, pseudo):
+        self.dopeName = dopeName
         self.uCorr = uCorr
         self.pseudo = pseudo
         self.objectDir = objectDir
@@ -67,14 +68,15 @@ class dope:
 
 
         self.jobs["pristine"] = {"1CUSO": "Not submitted", "2CUSnoO": "Not submitted", "3subCUS": "Not submitted", "4Bridge": "Not submitted", "5subBridge": "Not submitted"}
-        dopeAtom = {"1CUSO": 196, "2CUSnoO": 196, "3subCUS": 173, "4Bridge": 189, "5subBridge": 180}
-        removeAtoms = {"1CUSO": None, "2CUSnoO": 132, "3subCUS": None, "4Bridge": None, "5subBridge": None}
+        dopeAtomInd = {"1CUSO": 196, "2CUSnoO": 196, "3subCUS": 173, "4Bridge": 189, "5subBridge": 180}
+        trashAtomsInd = {"1CUSO": None, "2CUSnoO": 132, "3subCUS": None, "4Bridge": None, "5subBridge": None}
 
         for job in self.jobs["pristine"]:
             os.makedirs(job)
             jobPath = os.path.join(self.pristineDir, job)
 
             cpFile(["INCAR", "RuPOSCAR", "KPOINTS"], jobPath)
+            modifyPOSCAR(jobPath + "RuPOSCAR", self.dopeName, )
 
             #TODO: Have different vasp.slurm behavior depending on isContinuous
 
@@ -88,12 +90,7 @@ class dope:
 
 
             
-    def modifyPOSCAR(POSCARpath, dopeAtom, removeAtoms):
-        if dopeAtom !=None:
-            pass
-        
-        if removeAtoms !=None:
-            pass
+
             
     
 
@@ -105,8 +102,8 @@ class dope:
         pass
 
     # Getters
-    def get_dopantName(self):
-        return self.dopantName
+    def get_dopeName(self):
+        return self.dopeName
 
     def get_uCorr(self):
         return self.uCorr
