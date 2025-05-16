@@ -3,7 +3,7 @@ import shutil
 import sys
 sys.path.append('/home/ef35/Automated-Vacancy-Formation-Energy-Calculator')
 from cpFile import cpFile
-from modAtom import modifyPoscar
+from modPoscar import modPoscar
 
 class dope:
     def __init__(self, dopeName, objectDir, uCorr, pseudo):
@@ -76,7 +76,7 @@ class dope:
             jobPath = os.path.join(self.pristineDir, job)
 
             cpFile(["INCAR", "RuPOSCAR", "KPOINTS"], jobPath)
-            modifyPOSCAR(jobPath + "RuPOSCAR", self.dopeName, )
+            modPOSCAR(jobPath + "RuPOSCAR", self.dopeName, dopeAtomInd, trashAtomsInd)
 
             #TODO: Have different vasp.slurm behavior depending on isContinuous
 
@@ -84,9 +84,6 @@ class dope:
                 cpFile(["vasp.slurm"], jobPath)
 
             #TODO: figure out POTCAR
-
-            #TODO: modify POSCAR
-
 
 
             
