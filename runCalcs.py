@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 import sys
-
-def runCalcs(dopantName, storageDir, uCorr, pseudo):
-    dopant = dope(dopantName, storageDir, uCorr, pseudo)
-    dopant.runAll()
+from dopemodule import Dope
+def runCalcs(dopeName, objectDir, uCorr, pseudo):
+    dopant= Dope(dopeName, objectDir, uCorr, pseudo)
+    dopant.pristine
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
-        print("Usage: ./script.py dopeElem storageDir uCorr pseudo")
+        print("Usage: ./script.py dopeName storageDir uCorr pseudo")
         sys.exit(1)
     runCalcs(*sys.argv[1:])

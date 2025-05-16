@@ -1,14 +1,21 @@
+#dopemodule.py
+
 import os
 import shutil
 import sys
 sys.path.append('/home/ef35/Automated-Vacancy-Formation-Energy-Calculator')
 from cpFile import cpFile
-from modPoscar import modPoscar
+from modPoscar import modPOSCAR
+import subprocess
+import pdb
 
-class dope:
+
+class Dope:
     def __init__(self, dopeName, objectDir, uCorr, pseudo):
         self.dopeName = dopeName
         self.uCorr = uCorr
+
+        # This is either "_pv", "_sv", or ""
         self.pseudo = pseudo
         self.objectDir = objectDir
         self.pristineDir = None
@@ -36,7 +43,7 @@ class dope:
         """
         pass
 
-    def setup(self):
+    def __setup(self):
         """
         This will pretty much initialize values, put vasp.slurms in the right place, establish which jobs will be run. That sort of thing
         
@@ -56,11 +63,18 @@ class dope:
             os.makedirs(self.objectDir)
 
         os.chdir(self.objectDir)
+
+        pbePath = "~/work/tsenftle/software/vasp/potpaw_pbe/"
+        command = "cat " + pbePath + "/O/POTCAR " + pbePath + "/Ru/POTCAR " + pbePath + self.dopeName + self.pseudo + "> POTCAR"
+        subprocess.run(command, shell=True, capture_output=True, text=True)
+
         #TODO: I need different version of vasp.slurm
         
 
     def pristine(self):
-        self.setup()
+
+        pdb.set_trace()
+        self.__setup()
 
         os.makedirs("pristine")
         os.chdir("pristine")
@@ -76,20 +90,14 @@ class dope:
             jobPath = os.path.join(self.pristineDir, job)
 
             cpFile(["INCAR", "RuPOSCAR", "KPOINTS"], jobPath)
-            modPOSCAR(jobPath + "RuPOSCAR", self.dopeName, dopeAtomInd, trashAtomsInd)
+            modPOSCAR(os.path.join(jobPath, "RuPOSCAR"), self.dopeName, dopeAtomInd, trashAtomsInd)
 
             #TODO: Have different vasp.slurm behavior depending on isContinuous
 
             if not self.isContinuous:
                 cpFile(["vasp.slurm"], jobPath)
 
-            #TODO: figure out POTCAR
-
-
-            
-
-            
-    
+            shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(self.pristineDir, "POTCAR"))
 
 
     def topO(self):
