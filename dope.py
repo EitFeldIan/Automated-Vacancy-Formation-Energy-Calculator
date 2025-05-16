@@ -17,7 +17,7 @@ class Dope:
 
         # This is either "_pv", "_sv", or ""
         self.pseudo = pseudo
-        self.objectDir = objectDir
+        self.objectDir = os.path.abspath(objectDir)
         self.pristineDir = None
         self.topODir = None
         self.vacanciesDir = None
@@ -98,6 +98,8 @@ class Dope:
                 cpFile(["vasp.slurm"], jobPath)
 
             shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(self.pristineDir, "POTCAR"))
+
+            subprocess.run(["sed", "-i", f"/^LDAUU/s/ u\\b/ {self.uCorr}/", "INCAR"], check=True)
 
 
     def topO(self):
