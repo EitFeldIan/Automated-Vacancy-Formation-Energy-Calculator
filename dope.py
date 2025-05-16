@@ -1,5 +1,3 @@
-#dopemodule.py
-
 import os
 import shutil
 import sys
@@ -18,10 +16,10 @@ class Dope:
         # This is either "_pv", "_sv", or ""
         self.pseudo = pseudo
         self.objectDir = os.path.abspath(objectDir)
-        self.pristineDir = None
-        self.topODir = None
-        self.vacanciesDir = None
-        self.jobs = None
+        self.pristineDir = ""
+        self.topODir = ""
+        self.vacanciesDir = ""
+        self.jobs = {}
         self.functionPath = "/home/ef35/Automated-Vacancy-Formation-Energy-Calculator"
         self.isContinuous = False
 
@@ -68,12 +66,16 @@ class Dope:
         command = "cat " + pbePath + "/O/POTCAR " + pbePath + "/Ru/POTCAR " + pbePath + self.dopeName + self.pseudo + "> POTCAR"
         subprocess.run(command, shell=True, capture_output=True, text=True)
 
+        cpFile("INCAR", self.objectDir)
+
+        subprocess.run(["sed", "-i.bak", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
+
+
         #TODO: I need different version of vasp.slurm
         
 
     def pristine(self):
 
-        pdb.set_trace()
         self.__setup()
 
         os.makedirs("pristine")
@@ -83,23 +85,26 @@ class Dope:
 
         self.jobs["pristine"] = {"1CUSO": "Not submitted", "2CUSnoO": "Not submitted", "3subCUS": "Not submitted", "4Bridge": "Not submitted", "5subBridge": "Not submitted"}
         dopeAtomInd = {"1CUSO": 196, "2CUSnoO": 196, "3subCUS": 173, "4Bridge": 189, "5subBridge": 180}
-        trashAtomsInd = {"1CUSO": None, "2CUSnoO": 132, "3subCUS": None, "4Bridge": None, "5subBridge": None}
+        removeAtomsInd = {"1CUSO": None, "2CUSnoO": 132, "3subCUS": None, "4Bridge": None, "5subBridge": None}
 
         for job in self.jobs["pristine"]:
             os.makedirs(job)
             jobPath = os.path.join(self.pristineDir, job)
 
-            cpFile(["INCAR", "RuPOSCAR", "KPOINTS"], jobPath)
-            modPOSCAR(os.path.join(jobPath, "RuPOSCAR"), self.dopeName, dopeAtomInd, trashAtomsInd)
+            cpFile(["RuPOSCAR", "KPOINTS"], jobPath)
+            modPOSCAR(os.path.join(jobPath, "RuPOSCAR"), self.dopeName, dopeAtomInd[job], removeAtomsInd[job])
 
             #TODO: Have different vasp.slurm behavior depending on isContinuous
+            #TODO change vasp.slurm so the job name is different for every run
 
             if not self.isContinuous:
                 cpFile(["vasp.slurm"], jobPath)
 
             shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(self.pristineDir, "POTCAR"))
+            shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(self.pristineDir, "INCAR"))
 
-            subprocess.run(["sed", "-i", f"/^LDAUU/s/ u\\b/ {self.uCorr}/", "INCAR"], check=True)
+
+            #TODO: Run sbatch
 
 
     def topO(self):

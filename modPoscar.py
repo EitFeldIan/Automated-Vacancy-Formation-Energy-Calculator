@@ -3,24 +3,29 @@ from pymatgen.io.vasp import Poscar
 from pymatgen.core import Element
 import sys
 import argparse
+import pdb
 
 
-def modPOSCAR(POSCARpath, elemName, replaceAtomInd, removeAtomsInd, test=False):
+def modPOSCAR(POSCARpath, elemName, replaceAtomInd, removeAtomInds, test=False):
     if replaceAtomInd !=None:
         replaceAtom(POSCARpath, replaceAtomInd, elemName, test)
         
-    if removeAtomsInd !=None:
-        removeAtoms(POSCARpath, removeAtomsInd, test)
+    if removeAtomInds !=None:
+        removeAtoms(POSCARpath, removeAtomInds, test)
 
-def removeAtoms(POSCARpath, atoms, test=False):
+def removeAtoms(POSCARpath, atomInds, test=False):
     # Load POSCAR
     poscar = Poscar.from_file(POSCARpath)
     structure = poscar.structure
     if test:
         poscar.write_file(POSCARpath + "_old")
 
+    # It can't be iterated through in the special case that there is only one atom to be removed, therefore, make it iterable
+    if isinstance(atomInds, int):
+        atomInds = [atomInds]
+
     # Atoms should be 0 indexed and sort in reverse so that there is no index shifting
-    atomInds = [atom - 1 for atom in atoms]  
+    atomInds = [atom - 1 for atom in atomInds]  
     atomInds.sort(reverse=True)  
 
     for atomInd in atomInds:

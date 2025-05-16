@@ -1,0 +1,59 @@
+SYSTEM = Doped RuO2 15:1   
+
+#functional 
+GGA = PE ! PE for PBE, RP for revised PBE from Hammer et al., RE for revised PBE from Zhang et al. 
+
+#startup options
+ISTART   = 0        ! job: 0-new, 1-cont, 2-samecut
+ICHARG   = 2        ! charge: 1-file, 2-atom, 3-const
+INIWAV   = 1        ! wfn: 0-lowe, 1-rand
+
+#electronic relaxation
+NELM     = 100      ! Maximum number of SCF iterations
+ALGO     = fast     ! SCF algorithm, normal or fast
+ISPIN    = 2        ! spin polarization: 1-no spin polarization, 2-spin polarization
+EDIFF    = 1E-05    ! energy difference cutoff
+ISMEAR   = 0        ! smearing method: 0-gaussian, -5->tetrahedral method, 2-MP method (2nd order)
+SIGMA    = 0.2     ! smearing width, default = 0.2
+PREC     = accurate 
+ENCUT    = 500      ! Kinetic Energy cut-off (determined by convergence study), 130% if relaxation test
+LREAL    = auto     ! Real space projection
+
+#output options
+LWAVE    = .FALSE.   ! Write the wavecar file?
+LCHARG   = .FALSE.   ! Write the chgcar file?
+LAECHG   = .FALSE.   ! Write atomic core charge file?
+LVHAR    = .FALSE.   ! Write Hartree potential
+
+NCORE    = 8 
+KPAR     = 1
+
+#ionic relaxation options
+EDIFFG    = -0.02    ! if negative, relax until forces are below this value (in eV/A)
+IBRION    = 2        ! -1 freeze; 0 AIMD, 1 quasi-Newton, 2 CG method, 3 damp MD, 5 vibrational frequencies
+NSW       = 100      ! Number of relaxation steps
+ISIF      = 2        ! if relaxation, allows the all to relax
+POTIM     = 0.5      ! default is 0.5, scaling factor for forces, 0.02 for vibrational frequency
+
+#Van der waals correction
+IVDW = 11            ! zero damping DFT-D3 method of Grimme
+
+#Parallelization
+LPLANE = .TRUE.
+
+#GGA+U
+LDAU     = .TRUE.
+LDAUTYPE = 2         ! 1 LSDAU; 2 LSDAU-simplified; 4 LDAU
+LDAUL    = -1 -1 2   ! l-quantum number (for each species); 1=p, 2=d, 3=f, -1=no on site interaction
+LDAUU    = 0  0  u   ! on site Coulomb interaction (for each species);
+LDAUJ    = 0  0  0   ! on site Exchange interaction (for each species);
+LDAUPRINT = 2        ! 0 silent; 1 occupancy; 2 occupancy& potential
+LMAXMIX  = 4         ! 2 default; 4 d-elements; 6 f-elements
+
+#Dipole
+IDIPOL = 3
+LDIPOL = .TRUE.
+DIPOL = 0.5 0.5 0.5
+
+#Magnetization
+!  NUPDOWN  =       ! unpaired electron numbers

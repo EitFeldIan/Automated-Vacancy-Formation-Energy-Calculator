@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
-from dopemodule import Dope
+from Dope import Dope
 def runCalcs(dopeName, objectDir, uCorr, pseudo):
     dopant= Dope(dopeName, objectDir, uCorr, pseudo)
-    dopant.pristine
+    dopant.pristine()
 
 
 if __name__ == "__main__":
