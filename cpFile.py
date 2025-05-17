@@ -29,7 +29,6 @@ def cpFile(filenames, dest_path):
         
         try:
             shutil.copy2(src_path, dst_path)
-            print(f"Copied '{src_path}' to '{dst_path}'")
         except Exception as e:
             raise Exception(f"Error copying {filename}: {e}")
 

@@ -100,8 +100,8 @@ class Dope:
             if not self.isContinuous:
                 cpFile(["vasp.slurm"], jobPath)
 
-            shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(self.pristineDir, "POTCAR"))
-            shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(self.pristineDir, "INCAR"))
+            shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(jobPath, "POTCAR"))
+            shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(jobPath, "INCAR"))
 
 
             #TODO: Run sbatch
