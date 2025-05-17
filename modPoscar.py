@@ -4,7 +4,8 @@ from pymatgen.core import Element
 import sys
 import argparse
 import pdb
-
+import warnings
+from pymatgen.io.vasp import BadPoscarWarning
 
 def modPOSCAR(POSCARpath, elemName, replaceAtomInd, removeAtomInds, test=False):
     if replaceAtomInd !=None:
@@ -14,6 +15,9 @@ def modPOSCAR(POSCARpath, elemName, replaceAtomInd, removeAtomInds, test=False):
         removeAtoms(POSCARpath, removeAtomInds, test)
 
 def removeAtoms(POSCARpath, atomInds, test=False):
+
+    # It's going to complain that they all have T T T for selective dynamics, and then it will delete selective dynamics
+    warnings.filterwarnings("ignore", category=BadPoscarWarning)
     # Load POSCAR
     poscar = Poscar.from_file(POSCARpath)
     structure = poscar.structure

@@ -38,6 +38,8 @@ class Dope:
         """
     def updateStatus(self, status):
         """
+
+        #TODO: need to actually do this
         The status of all jobs will start as None. Other statuses include submitted, begun, completed, failed.
         """
         pass
@@ -108,7 +110,6 @@ class Dope:
             shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(jobPath, "POTCAR"))
             shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(jobPath, "INCAR"))
 
-            print(f"Submitting {job}")
             subprocess.run(["sbatch", "vasp.slurm"])
 
             os.chdir(self.pristineDir)
