@@ -64,7 +64,7 @@ class Dope:
 
         pbePath = "~/work/tsenftle/software/vasp/potpaw_pbe/"
         pdb.set_trace()
-        command = "cat " + pbePath + "O/POTCAR " + pbePath + "Ru/POTCAR " + pbePath + self.dopeName + self.pseudo + "> POTCAR"
+        command = "cat " + pbePath + "O/POTCAR " + pbePath + "Ru/POTCAR " + pbePath + self.dopeName + self.pseudo + "/POTCAR> POTCAR"
         subprocess.run(command, shell=True, capture_output=True, text=True)
 
         cpFile("INCAR", self.objectDir)
