@@ -66,16 +66,14 @@ class Dope:
 
         #TODO: Add something here if they try to use a pseudo that doesn't exist in the folder
         command = "cat " + pbePath + "O/POTCAR " + pbePath + "Ru/POTCAR " + pbePath + self.dopeName + self.pseudo + "/POTCAR> POTCAR"
-        subprocess.run(command, shell=True, capture_output=True, text=True)
+        subprocess.run(command, shell=True, text=True)
 
         cpFile("INCAR", self.objectDir)
 
         #TODO: remove this testing thing
         mac = True
-        if mac:
-            subprocess.run(["sed", "-i.bak", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
-        else:
-            subprocess.run(["sed", "-i", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
+        subprocess.run(["sed", "-i.bak", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
+        subprocess.run(["sed", "-i", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
 
         #TODO: I need different version of vasp.slurm
         
