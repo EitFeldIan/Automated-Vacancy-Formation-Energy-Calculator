@@ -70,9 +70,6 @@ class Dope:
 
         cpFile("INCAR", self.objectDir)
 
-        #TODO: remove this testing thing
-        mac = True
-        subprocess.run(["sed", "-i.bak", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
         subprocess.run(["sed", "-i", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
 
         #TODO: I need different version of vasp.slurm
