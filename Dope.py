@@ -101,7 +101,7 @@ class Dope:
 
             if not self.isContinuous:
                 cpFile(["vasp.slurm"], jobPath)
-                subprocess.run(["sed", "-i", f's/#SBATCH --job-name=.*/#SBATCH --job-name={new_job_name}/', "vasp.slurm"], check=True)
+                subprocess.run(["sed", "-i", f's/#SBATCH --job-name=.*/#SBATCH --job-name={job}/', "vasp.slurm"], check=True)
 
             shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(jobPath, "POTCAR"))
             shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(jobPath, "INCAR"))
