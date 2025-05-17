@@ -36,13 +36,6 @@ class Dope:
         This will be some function such that it will be called after a job is finished and you're in runAll mode. Pretty much notify will check if the necessary jobs have reached completed status.
         If they have, it will call the next step (either topO or vacancies)
         """
-    def updateStatus(self, status):
-        """
-
-        #TODO: need to actually do this
-        The status of all jobs will start as None. Other statuses include submitted, begun, completed, failed.
-        """
-        pass
 
     def __setup(self):
         """
@@ -105,12 +98,13 @@ class Dope:
 
             if not self.isContinuous:
                 cpFile(["vasp.slurm"], jobPath)
-                subprocess.run(["sed", "-i", f's/^#SBATCH --job-name=.*/#SBATCH --job-name={job}/', "vasp.slurm"], check=True)
+                subprocess.run(["sed", "-i", f's/^#SBATCH --job-name=.*/#SBATCH --job-name={self.dopeName + job}/', "vasp.slurm"], check=True)
 
             shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(jobPath, "POTCAR"))
             shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(jobPath, "INCAR"))
 
             subprocess.run(["sbatch", "vasp.slurm"])
+            self.jobs["pristine"][job] = "submitted"
 
             os.chdir(self.pristineDir)
 
