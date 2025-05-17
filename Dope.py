@@ -63,13 +63,13 @@ class Dope:
         os.chdir(self.objectDir)
 
         pbePath = "~/work/tsenftle/software/vasp/potpaw_pbe/"
+        pdb.set_trace()
         command = "cat " + pbePath + "/O/POTCAR " + pbePath + "/Ru/POTCAR " + pbePath + self.dopeName + self.pseudo + "> POTCAR"
         subprocess.run(command, shell=True, capture_output=True, text=True)
 
         cpFile("INCAR", self.objectDir)
 
         subprocess.run(["sed", "-i", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
-        pdb.set_trace()
 
         #TODO: I need different version of vasp.slurm
         
