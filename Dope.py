@@ -63,12 +63,19 @@ class Dope:
         os.chdir(self.objectDir)
 
         pbePath = "~/work/tsenftle/software/vasp/potpaw_pbe/"
+
+        #TODO: Add something here if they try to use a pseudo that doesn't exist in the folder
         command = "cat " + pbePath + "O/POTCAR " + pbePath + "Ru/POTCAR " + pbePath + self.dopeName + self.pseudo + "/POTCAR> POTCAR"
         subprocess.run(command, shell=True, capture_output=True, text=True)
 
         cpFile("INCAR", self.objectDir)
 
-        subprocess.run(["sed", "-i", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
+        #TODO: remove this testing thing
+        mac = True
+        if mac:
+            subprocess.run(["sed", "-i.bak", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
+        else:
+            subprocess.run(["sed", "-i", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
 
         #TODO: I need different version of vasp.slurm
         
@@ -82,6 +89,7 @@ class Dope:
         self.pristineDir = os.path.join(self.objectDir, "pristine")
 
 
+        #TODO: Check whether all of these are working as intended
         self.jobs["pristine"] = {"1CUSO": "Not submitted", "2CUSnoO": "Not submitted", "3subCUS": "Not submitted", "4Bridge": "Not submitted", "5subBridge": "Not submitted"}
         dopeAtomInd = {"1CUSO": 196, "2CUSnoO": 196, "3subCUS": 173, "4Bridge": 189, "5subBridge": 180}
         removeAtomsInd = {"1CUSO": None, "2CUSnoO": 132, "3subCUS": None, "4Bridge": None, "5subBridge": None}
