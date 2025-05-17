@@ -118,10 +118,8 @@ class Dope:
 
     def save(self):
 
-        dataDict = self.to_dict()
-
         with open(os.path.join(self.objectDir, self.dopeName+ ".json"), 'w') as json_file:
-            json.dump(dataDict, json_file, indent=4)
+            json.dump(self.__dict__, json_file, indent=4)
 
 
     def topO(self):
