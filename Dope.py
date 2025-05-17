@@ -108,6 +108,7 @@ class Dope:
             shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(jobPath, "POTCAR"))
             shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(jobPath, "INCAR"))
 
+            subprocess.run(["sbatch", "vasp.slurm"])
 
             #TODO: Run sbatch
 
