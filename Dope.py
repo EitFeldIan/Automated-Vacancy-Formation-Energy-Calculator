@@ -6,6 +6,7 @@ from cpFile import cpFile
 from modPoscar import modPOSCAR
 import subprocess
 import pdb
+import json
 
 
 class Dope:
@@ -110,9 +111,16 @@ class Dope:
             print(f"Submitting {job}")
             subprocess.run(["sbatch", "vasp.slurm"])
 
-            #TODO: Run sbatch
-
             os.chdir(self.pristineDir)
+
+        self.save()
+        
+
+
+    
+    def save(self):
+        with open(os.path.join(self.objectDir, self.dopeName, ".json"), 'w') as json_file:
+            json.dump(self, json_file, indent=4)
 
 
     def topO(self):
