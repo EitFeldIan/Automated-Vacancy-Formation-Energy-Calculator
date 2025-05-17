@@ -119,7 +119,7 @@ class Dope:
 
     
     def save(self):
-        with open(os.path.join(self.objectDir, self.dopeName, ".json"), 'w') as json_file:
+        with open(os.path.join(self.objectDir, self.dopeName+ ".json"), 'w') as json_file:
             json.dump(self, json_file, indent=4)
 
 
