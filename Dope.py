@@ -102,12 +102,12 @@ class Dope:
 
             if not self.isContinuous:
                 cpFile(["vasp.slurm"], jobPath)
-                pdb.set_trace()
                 subprocess.run(["sed", "-i", f's/^#SBATCH --job-name=.*/#SBATCH --job-name={job}/', "vasp.slurm"], check=True)
 
             shutil.copy2(os.path.join(self.objectDir, "POTCAR"),os.path.join(jobPath, "POTCAR"))
             shutil.copy2(os.path.join(self.objectDir, "INCAR"),os.path.join(jobPath, "INCAR"))
 
+            print(f"Submitting {job}")
             subprocess.run(["sbatch", "vasp.slurm"])
 
             #TODO: Run sbatch
