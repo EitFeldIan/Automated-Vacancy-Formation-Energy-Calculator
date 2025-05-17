@@ -92,6 +92,7 @@ class Dope:
         for job in self.jobs["pristine"]:
             os.makedirs(job)
             jobPath = os.path.join(self.pristineDir, job)
+            os.chdir(jobPath)
 
             cpFile(["POSCAR", "KPOINTS"], jobPath)
             modPOSCAR(os.path.join(jobPath, "POSCAR"), self.dopeName, dopeAtomInd[job], removeAtomsInd[job])
@@ -109,6 +110,8 @@ class Dope:
 
 
             #TODO: Run sbatch
+
+            os.chdir(self.pristineDir)
 
 
     def topO(self):
