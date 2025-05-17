@@ -68,8 +68,8 @@ class Dope:
 
         cpFile("INCAR", self.objectDir)
 
-        subprocess.run(["sed", "-i.bak", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
-
+        subprocess.run(["sed", "-i", f"/^LDAUU/s/ u / {self.uCorr} /", "INCAR"], check=True)
+        pdb.set_trace()
 
         #TODO: I need different version of vasp.slurm
         
