@@ -91,8 +91,8 @@ class Dope:
             os.makedirs(job)
             jobPath = os.path.join(self.pristineDir, job)
 
-            cpFile(["RuPOSCAR", "KPOINTS"], jobPath)
-            modPOSCAR(os.path.join(jobPath, "RuPOSCAR"), self.dopeName, dopeAtomInd[job], removeAtomsInd[job])
+            cpFile(["POSCAR", "KPOINTS"], jobPath)
+            modPOSCAR(os.path.join(jobPath, "POSCAR"), self.dopeName, dopeAtomInd[job], removeAtomsInd[job])
 
             #TODO: Have different vasp.slurm behavior depending on isContinuous
             #TODO change vasp.slurm so the job name is different for every run
