@@ -24,7 +24,6 @@ class Dope:
         self.functionPath = "/home/ef35/Automated-Vacancy-Formation-Energy-Calculator"
         self.isContinuous = False
 
-
     # Functions
     def runAll(self):
         self.isContinuous = True
@@ -94,7 +93,6 @@ class Dope:
             modPOSCAR(os.path.join(jobPath, "POSCAR"), self.dopeName, dopeAtomInd[job], removeAtomsInd[job])
 
             #TODO: Have different vasp.slurm behavior depending on isContinuous
-            #TODO change vasp.slurm so the job name is different for every run
 
             if not self.isContinuous:
                 cpFile(["vasp.slurm"], jobPath)
@@ -113,37 +111,17 @@ class Dope:
 
     def save(self):
 
-        with open(os.path.join(self.objectDir, self.dopeName+ ".json"), 'w') as json_file:
+        with open(os.path.join(self.objectDir, os.path.basename(self.objectDir)+ ".json"), 'w') as json_file:
             json.dump(self.__dict__, json_file, indent=4)
 
+    def updateStatus(self, jobDir, status):
+        jobType = jobDir.split(os.sep)[-2]
+        job = os.path.basename(jobDir)
+        self.jobs[jobType][job] = status
+        self.save()
 
     def topO(self):
         pass
 
     def vacancies(self):
         pass
-
-    # Getters
-    def get_dopeName(self):
-        return self.dopeName
-
-    def get_uCorr(self):
-        return self.uCorr
-
-    def get_pseudo(self):
-        return self.pseudo
-
-    def get_objectDir(self):
-        return self.objectDir
-
-    def get_pristineDir(self):
-        return self.pristineDir
-
-    def get_topODir(self):
-        return self.topODir
-
-    def get_vacanciesDir(self):
-        return self.vacanciesDir
-
-    def get_jobs(self):
-        return self.jobs

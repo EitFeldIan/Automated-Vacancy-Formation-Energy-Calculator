@@ -10,6 +10,18 @@
 
 cd $SLURM_SUBMIT_DIR
 
+dopantJSON=$(echo "$path" | awk -F'/' '{OFS="/"; $0=$0; NF-=2; print}').json
+
+python3 - <<EOF
+import json
+
+with open("${dopantJSON}", 'r') as file:
+    dopant = json.load(file)
+    dopant.updateStatus("${SLURM_SUBMIT_DIR}", "Started")
+
+EOF
+
+
 echo "Job started on `hostname` at `date`"
 
 module purge
@@ -18,4 +30,13 @@ ulimit -s unlimited
 
 srun ~/bin/vasp_std
 echo "Job finished on `hostname` at `date`"
+
+python3 - <<EOF
+import json
+
+with open("${dopantJSON}", 'r') as file:
+    dopant = json.load(file)
+    dopant.updateStatus("${SLURM_SUBMIT_DIR}", "Finished")
+
+EOF
 
